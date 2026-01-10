@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NullByte | Offensive Research Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --accent: #00ff41;
+            --glass: rgba(10, 10, 12, 0.85);
+            --border: rgba(0, 255, 65, 0.2);
+            --glitch-pink: #ff00c1;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'JetBrains Mono', monospace;
+            color: #fff;
+            background: url('https://64.media.tumblr.com/4b3ea84014d217354e73a43ca93acec2/ceca96c131ef2062-ab/s1280x1920/364734770567674c82accae2a4bf43dc3f54e30a.gif') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #050505;
+        }
+
+        .scanline-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .dark-shield {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%);
+            z-index: -1;
+        }
+
+        /* Navbar */
+        nav {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.8);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo { 
+            font-size: 1.4rem; 
+            font-weight: bold; 
+            color: var(--accent); 
+            text-shadow: 0 0 8px var(--accent);
+            cursor: pointer;
+        }
+
+        .logo:hover {
+            animation: glitch 0.3s infinite;
+            text-shadow: 2px 0 var(--glitch-pink), -2px 0 var(--accent);
+        }
+
+        .menu a {
+            color: #888;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .menu a:hover { color: var(--accent); }
+
+        /* Container Principal */
+        .main-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        header { text-align: center; margin-bottom: 80px; }
+        header h1 { font-size: 3rem; text-transform: uppercase; letter-spacing: -2px; }
+        header span { color: var(--accent); }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            border-color: var(--accent);
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
+        }
+
+        .card-img-container {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1) brightness(0.7);
+            transition: 0.5s;
+        }
+
+        .card:hover img {
+            filter: grayscale(0) brightness(1);
+            transform: scale(1.1);
+        }
+
+        .card-body { padding: 25px; }
+
+        .tag {
+            background: rgba(0, 255, 65, 0.1);
+            color: var(--accent);
+            padding: 4px 10px;
+            font-size: 0.65rem;
+            border-radius: 3px;
+            border: 1px solid var(--border);
+            text-transform: uppercase;
+        }
+
+        .card h3 { margin: 15px 0; font-size: 1.25rem; }
+        .card p { color: #aaa; font-size: 0.85rem; line-height: 1.6; height: 60px; overflow: hidden; }
+
+        .btn-read {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.75rem;
+            border: 1px solid var(--accent);
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .btn-read:hover { background: var(--accent); color: #000; }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="scanline-overlay"></div>
+    <div class="dark-shield"></div>
+
+    <nav>
+        <div class="logo">NULLBYTE 0X0539</div>
+        <div class="menu">
+            <a href="/">/HOME</a>
+            <a href="/papers/index.html">/PAPERS</a>
+            <a href="/exploit/index.html">/EXPLOITS</a>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <header>
+            <h1>Offensive <span>Research</span></h1>
+            <p style="color: #666;">Welcome to my Brain</p>
+        </header>
+
+        <div class="article-grid">
+            
+            <article class="card">
+                <div class="card-img-container">
+                    <img src="https://i.imgur.com/e9tqXhR.jpeg" alt="C2 Agent">
+	
+                </div>
+                <div class="card-body">
+                    <span class="tag">Red Team</span>
+                    <h3>Codando um Agente C2</h3>
+                    <p>Desenvolvimento de um agente C2 nivel ring3, com base no acionamento de um determinado input o agente se inicia</p>
+                    <a href="#" class="btn-read">ACESSAR_ARTIGO</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-img-container">
+                    <img src="https://i.imgur.com/8PMAk5s.jpeg" alt="indirect syscall">
+                </div>
+                <div class="card-body">
+                    <span class="tag">Exploitation</span>
+                    <h3>Descobrindo indirect syscall</h3>
+                    <p>Técnicas de chamada indireta usando outras syscalls legitimas do sistema para bypassar EDR no linux</p>
+                    <a href="#" class="btn-read">ACESSAR ARTIGO</a>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-img-container">
+                    <img src="https://i.imgur.com/RIyHVDJ.jpeg" alt="Exfiltration All protocols">
+                </div>
+                <div class="card-body">
+                    <span class="tag">Cloud Security</span>
+                    <h3>Exfiltração em Diversos Protocolos de Rede</h3>
+                    <p>Como usar os protocolos ao seu favor para exfiltrar dados! Neste tema te garanto que vai adquirir conhecimento sobre exfiltration.</p>
+
+                    <a href="#" class="btn-read">ACESSAR_ARTIGO</a>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 100px 0; color: #444; font-size: 0.7rem;">
+        CONNECTED_SERVER :: ENCRYPTED_SESSION_1337
+    </footer>
+
+</body>
+</html>
