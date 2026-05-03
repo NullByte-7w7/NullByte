@@ -1,1 +1,197 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>C2 OPSEC Research - nullbyte</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --text-std: #ffffff;
+            --attention: #ff0000;
+            --teaching: #ff00ff;
+            --tactical: #00ffff;
+            --dim: #333333;
+            --font: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-std);
+            font-family: var(--font);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .paper-container {
+            max-width: 800px;
+            width: 90%;
+            margin: 50px 0;
+            border: 1px solid var(--dim);
+            padding: 40px;
+            background: #050505;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            position: relative; /* Para posicionar o botão se necessário */
+        }
+
+        /* Estilo do Botão Voltar */
+        .btn-back {
+            display: inline-block;
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin-bottom: 30px;
+            border: 1px solid var(--dim);
+            padding: 5px 10px;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            color: var(--tactical);
+            border-color: var(--tactical);
+            text-shadow: 0 0 5px var(--tactical);
+        }
+
+        .warn { color: var(--attention); font-weight: bold; }
+        .intel { color: var(--teaching); font-style: italic; }
+        .cmd { color: var(--tactical); }
+
+        pre.ascii {
+            color: var(--tactical);
+            font-size: 10px;
+            line-height: 1.2;
+            text-align: center;
+            border-bottom: 1px double var(--dim);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 { border-bottom: 2px solid var(--attention); padding-bottom: 10px; color: var(--attention); }
+        hr { border: 0; border-top: 1px solid var(--dim); margin: 30px 0; }
+        .footer-note { text-align: center; margin-top: 50px; color: var(--dim); font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<div class="paper-container">
+    <!-- BOTÃO VOLTAR -->
+    <a href="../../home.html" class="btn-back"> [ <_ BACK_TO_PAPERS ] </a>
+
+    <!-- ABERTURA TÁTICA -->
+    <pre class="ascii">
+                                         .
+                                          `.
+
+                                     ...
+                                        `.
+                                  ..
+                                    `.
+                            `.        `.
+                         ___`.\.//
+                            `---.---
+                           /     \.--
+                          /       \-
+                         |   /\    \
+                         |\==/\==/  |
+                         | `@'`@'  .--.
+                  .--------.           )
+                .'             .   `._/
+               /               |     \
+              .               /       |
+              |              /        |
+              |            .'         |   .--.
+             .'`.        .'_          |  /    \
+           .'    `.__.--'.--`.       / .'      |
+         .'            .|    \\     |_/        |
+       .'            .' |     \\               |
+     .-`.           /   |      .      __       |
+   .'    `.     \   |   `           .'  )      \
+  /        \   / \  |            .-'   /       |
+ (  /       \ /   \ |                 |        |
+  \/         (     \/                 |        |
+  (  /        )    /                 /   _.----|
+   \/   //   /   .'                  |.-'       `
+   (   /(   /   /                    /      `.   |
+    `.(  `-')  .---.                |    `.   `._/
+       `._.'  /     `.   .---.      |  .   `._.'
+              |       \ /     `.     \  `.___.'
+              |        Y        `.    `.___.'
+              |      . |          \         \
+              |       `|           \         |
+              |        |       .    \        |
+              |        |        \    \       |
+            .--.       |         \           |
+           /    `.  .----.        \          /
+          /       \/      \        \        /
+          |       |        \       |       /
+           \      |    @    \   `-. \     /
+            \      \         \     \|.__.'
+             \      \         \     |
+              \      \         \    |
+               \      \         \   |
+                \    .'`.        \  |
+                 `.-'    `.    _.'\ |
+                   |       `.-'    ||
+              .     \     . `.     ||      .'
+               `.    `-.-'    `.__.'     .'
+                 `.                    .'
+             .                       .'
+              `.
+                                           .-'
+                                        .-'
+
+      \                 \
+       \         ..      \
+        \       /  `-.--.___ __.-.___
+`-.      \     /  #   `-._.-'    \   `--.__
+   `-.        /  ####    /   ###  \        `.
+________     /  #### ############  |       _|           .'
+            |\ #### ##############  \__.--' |    /    .'
+            | ####################  |       |   /   .'
+            | #### ###############  |       |  /
+            | #### ###############  |      /|      ----
+          . | #### ###############  |    .'<    ____
+        .'  | ####################  | _.'-'\|
+      .'    |   ##################  |       |
+             `.   ################  |       |
+               `.    ############   |       | ----
+              ___`.     #####     _..____.-'     .
+             |`-._ `-._       _.-'    \\\         `.
+          .'`-._  `-._ `-._.-'`--.___.-' \          `.
+        .' .. . `-._  `-._        ___.---'|   \   \
+      .' .. . .. .  `-._  `-.__.-'        |    \   \
+     |`-. . ..  . .. .  `-._|             |     \   \
+     |   `-._ . ..  . ..   .'            _|
+      `-._   `-._ . ..   .' |      __.--'
+          `-._   `-._  .' .'|__.--'
+              `-._   `' .'
+                  `-._.'
+207
+
+0
+
+my account have MFA, how its happend!
+    </pre>
+
+    <h1>Building a phishing Infrastructure</h1>
+    
+    <p><strong>Author:</strong> nullbyte</p>
+    <p><strong>Date:</strong> 2026-05-03</p>
+
+    <hr>
+
+    <p>
+       learn how to set up a phishing infrastructure used to evade MFA 
+    </p>
+
+    
+    <div class="footer-note">
+        [ END OF DOCUMENT - MORE CONTENT PENDING ]
+    </div>
+</div>
+
+</body>
+</html>
