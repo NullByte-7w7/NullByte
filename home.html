@@ -1,0 +1,304 @@
+<div id="boot-screen">
+    <div id="boot-log"></div>
+</div>
+
+<style>
+    #boot-screen {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background: #000;
+        color: #fff;
+        font-family: "Courier New", monospace;
+        padding: 20px;
+        z-index: 20000;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .log-malware { color: #e310a3; font-weight: bold; }
+    .log-entry { margin-bottom: 2px; font-size: 14px; }
+    .log-success { color: #00ff00; }
+    .log-error { color: #ff3e3e; font-weight: bold; }
+    .log-warning { color: #ffcc00; }
+
+    /* Esconder o desktop enquanto carrega */
+    #desktop, #taskbar { visibility: hidden; }
+</style>
+<script>
+    const logContainer = document.getElementById('boot-log');
+
+    const bootSequence = [
+        { t: "[  0.000000] Linux version 5.15.0-76-generic (nullbyte@terminal)", type: "info" },
+        { t: "[  0.124512] Command line: BOOT_IMAGE=/vmlinuz-5.15 root=UUID=x0539 ro quiet splash", type: "info" },
+        { t: "[  0.456123] x86/fpu: Supporting XSAVE feature set: 0x01f", type: "info" },
+        { t: "[  1.102341] Initializing cgroup subsys cpuset", type: "info" },
+        { t: "[  1.567822] pci 0000:00:01.0: [8086:1901] type 00 class 0x060400", type: "info" },
+        { t: "[  2.120098] SCSI subsystem initialized", type: "info" },
+        { t: "[  2.890112] usbcore: registered new interface driver usbfs", type: "info" },
+        { t: "[  3.456122] Mounting root filesystem...", type: "info" },
+        { t: "[  3.890123] EXT4-fs (sda1): mounted filesystem with ordered data mode.", type: "success" },
+        { t: "[  4.210982] Checking for security modules...", type: "warning" },
+        { t: "[  4.500121] ALERT: EDR NOT FOUND - SYSTEM VULNERABLE", type: "error" },
+        { t: "[  5.102933] Initializing network interfaces: eth0 up", type: "success" },
+        { t: "[  5.678122] Loading custom kernel modules...", type: "info" },
+        { t: "[  6.102394] INSMOD: nullbyte0x0539.ko ...", type: "info" },
+        { t: "[  7.234122] nullbyte0x0539.ko: ko loading with success!", type: "malware" },
+        { t: "[  7.890123] nullbyte0x0539.ko: Hiding processes and hooks initialized.", type: "malware" },
+        { t: "[  8.500000] Starting Graphical Interface...", type: "info" }
+    ];
+
+    let i = 0;
+    function runBoot() {
+        if (i < bootSequence.length) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry'; // Classe base
+
+            if (bootSequence[i].type === 'malware') entry.className += ' log-malware';
+            if (bootSequence[i].type === 'error')   entry.className += ' log-error';
+            if (bootSequence[i].type === 'success') entry.className += ' log-success';
+            if (bootSequence[i].type === 'warning') entry.className += ' log-warning';
+
+            entry.innerText = bootSequence[i].t;
+            logContainer.appendChild(entry);
+
+            window.scrollTo(0, document.body.scrollHeight);
+
+            let delay = Math.random() * 200 + 50;
+            if (bootSequence[i].type === 'error' || bootSequence[i].type === 'malware') {
+                delay = 800;
+            }
+
+            i++;
+            setTimeout(runBoot, delay);
+        } else {
+            setTimeout(() => {
+                const bootScreen = document.getElementById('boot-screen');
+                const desktop = document.getElementById('desktop');
+                const taskbar = document.getElementById('taskbar');
+
+                if(bootScreen) bootScreen.style.display = 'none';
+                if(desktop) desktop.style.visibility = 'visible';
+                if(taskbar) taskbar.style.visibility = 'visible';
+            }, 1000);
+		setTimeout(() => {
+                window.location.href = "home.html";
+            }, 1500);
+        }
+    }
+
+    window.onload = runBoot;
+</script>
+root@microsoft /v/w/html# cat home.html 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0xPwnbuff3r - NULLBYTE 0x0539</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --main: #ff0000; 
+            --text: #d1d1d1;
+            --dim: #333333;
+            --font: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .wrapper { max-width: 900px; width: 100%; }
+
+        nav {
+            border: 1px solid var(--dim);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .nav-links button {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-family: var(--font);
+            cursor: pointer;
+            margin-right: 15px;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .nav-links button:hover, .nav-links button.active {
+            color: var(--main);
+            text-shadow: 0 0 5px var(--main);
+        }
+
+        .handle { color: var(--main); font-weight: bold; }
+
+        .tab-content { display: none; min-height: 400px; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 { color: var(--main); text-transform: uppercase; margin-top: 0; }
+        
+        .social-list { list-style: none; padding: 0; }
+        .social-list li { margin: 10px 0; border-left: 2px solid var(--dim); padding-left: 15px; }
+        .social-list a { color: var(--main); text-decoration: none; }
+        .social-list a:hover { text-decoration: underline; }
+
+        .htb-card { 
+            display: flex; 
+            gap: 20px; 
+            border: 1px solid #111; 
+            padding: 20px; 
+            margin-bottom: 25px;
+            background: #050505;
+        }
+
+        .machine-thumb { 
+            width: 100px; height: 100px; 
+            border: 1px solid var(--dim);
+            object-fit: cover;
+        }
+
+        .tag { font-size: 0.7rem; padding: 2px 5px; border: 1px solid; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
+        .hard { color: var(--main); border-color: var(--main); }
+        .medium { color: #ffae00; border-color: #ffae00; }
+
+        .log-entry { font-size: 0.75rem; color: #555; margin-top: 10px; border-top: 1px solid #111; padding-top: 5px; }
+
+        footer { margin-top: 60px; border-top: 1px solid var(--dim); padding-top: 20px; font-size: 0.7rem; color: #444; text-align: center; }
+
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <nav>
+            <div class="nav-links">
+                <button onclick="openTab('home')" class="active">[ 0xh0m3 ]</button>
+                <button onclick="openTab('about')">[ 0xAb0ut-Us ]</button>
+                <button onclick="openTab('contribute')">[ 0xC0ntribut3 ]</button>
+                <button onclick="openTab('papers')">[ 0xP4p3rs ]</button>
+            </div>
+            <div class="handle">pwnbuffer@nullbyte</div>
+        </nav>
+
+        <!-- ABA HOME -->
+        <div id="home" class="tab-content active">
+            <h1>/SEC</h1>
+            <pre style="color:#00ffff; font-size: 0.6rem; line-height: 1.2; margin-bottom: 30px; text-shadow: 0 0 5px var(--main);">
+        |\                |\                |\                |\
+   || .---.          || .---.          || .---.          || .---.
+   ||/_____\         ||/_____\         ||/_____\         ||/_____\
+   ||( '.' )         ||( '.' )         ||( '.' )         ||( '.' )
+   || \_-_/_         || \_-_/_         || \_-_/_         || \_-_/_
+   :-"`'V'//-.       :-"`'V'//-.       :-"`'V'//-.       :-"`'V'//-.
+  / ,   |// , `\    / ,   |// , `\    / ,   |// , `\    / ,   |// , `\
+ / /|Ll //Ll|| |   / /|Ll //Ll|| |   / /|Ll //Ll|| |   / /|Ll //Ll|| |
+/_/||__//   || |  /_/||__//   || |  /_/||__//   || |  /_/||__//   || |
+\ \/---|[]==|| |  \ \/---|[]==|| |  \ \/---|[]==|| |  \ \/---|[]==|| |
+ \/\__/ |   \| |   \/\__/ |   \| |   \/\__/ |   \| |   \/\__/ |   \| |
+ /\|_   | Ll_\ |   /|/_   | Ll_\ |   /|/_   | Ll_\ |   /|/_   | Ll_\ |
+ `--|`^"""^`||_|   `--|`^"""^`||_|   `--|`^"""^`||_|   `--|`^"""^`||_|
+    |   |   ||/        |   |   ||/        |   |   ||/        |   |   ||/
+    |   |   |          |   |   |          |   |   |          |   |   |
+    |   |   |          |   |   |          |   |   |          |   |   |
+    |   |   |          |   |   |          |   |   |          |   |   |
+    L___l___J          L___l___J          L___l___J          L___l___J
+     |_ | _|            |_ | _|            |_ | _|            |_ | _|
+    (___|___)          (___|___)          (___|___)          (___|___)
+     ^^^ ^^^            ^^^ ^^^            ^^^ ^^^            ^^^ ^^^
+                Attack Advancing Effectively (AAE)
+            </pre>
+            <p>welcome to my brain, here you will explore my mind as if you were in a brain terminal, being able to gain knowledge with themes that I love, hope it helps you.</p>
+        </div>
+
+        <!-- ABA ABOUT -->
+        <div id="about" class="tab-content">
+            <h2>[ 0xAb0ut-Us ]</h2>
+            <p>Nullbyte, cyber security student, just a guy who wants to be the best at what makes him want to be better than myself every day that passes makes me a persistent person.</p>
+            <ul class="social-list">
+                <li>LinkedIn: <a href="https://www.linkedin.com/in/lucas-wallace-908662375/" target="_blank">/sec/nullbyte-pwn</a></li>
+                <li>GitHub: <a href="https://github.com/NullByte-7w7" target="_blank">/nullbyte-l33t</a></li>
+                <li>Discord: <span style="color: var(--main);">darksec_</span></li>
+            </ul>
+        </div>
+
+        <!-- ABA CONTRIBUTE -->
+        <div id="contribute" class="tab-content">
+            <h2>[ 0xC0ntribut3 ]</h2>
+            <p>If you want to contribute any ideas about the posts or financially here is my address ETH<pre style="color:green">0x9B232F0A041b075F50B2072908fa8A8b3b139633</pre></p>
+        </div>
+
+<!-- ABA PAPERS -->
+        <div id="papers" class="tab-content">
+            <h2>[ 0xP4p3rs ]</h2>
+            
+            <!-- Paper 1: C2 Infrastructure -->
+            <div class="htb-card">
+                <div>
+                    <span class="tag hard">Advanced</span>
+                    <h3 style="margin: 0; color: var(--main);">Building a Resilient C2 Infrastructure & OPSEC</h3>
+                    <p style="font-size: 0.9rem; margin: 10px 0;">
+                        A comprehensive guide on deploying redirectors using AWS CloudFront and Elastic Load Balancers to hide backend Command and Control servers, focusing on operational security and traffic obfuscation.
+                    </p>
+                    <div class="log-entry">
+                        <a href="papers/redteam/c2-infrastructure-opsec.html" style="color: var(--main); text-decoration: none;">[READ_PAPER]</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paper 2: Phishing Infrastructure -->
+            <div class="htb-card">
+                <div>
+                    <span class="tag medium">Intermediate</span>
+                    <h3 style="margin: 0; color: var(--main);">Constructing a Phishing Infrastructure for Red Team Operations</h3>
+                    <p style="font-size: 0.9rem; margin: 10px 0;">
+                        Implementation of automated phishing frameworks, SMTP relay hardening, and domain categorization bypass techniques to ensure high delivery rates during initial access simulations.
+                    </p>
+                    <div class="log-entry">
+                        <a href="papers/redteam/phishing-infrastructure.html" style="color: var(--main); text-decoration: none;">[READ_PAPER]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script>
+        function openTab(tabName) {
+            // Esconde todos os conteúdos
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+
+            // Remove a classe 'active' de todos os botões
+            tablinks = document.querySelectorAll(".nav-links button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Mostra a aba atual e marca o botão como ativo
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+    </script>
+
+</body>
+</html>
