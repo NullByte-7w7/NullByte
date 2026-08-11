@@ -1,211 +1,520 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>0xPwnbuff3r - NULLBYTE 0x0539</title>
-    <style>
-        :root {
-            --bg: #000000;
-            --main: #ff0000; 
-            --text: #d1d1d1;
-            --dim: #333333;
-            --font: 'Courier New', Courier, monospace;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[root@0x0539 ~]#</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050505;
+    --panel:#0c0c0c;
+    --panel-2:#101010;
+    --border:#262626;
+    --border-soft:#181818;
+    --text:#d9d9d9;
+    --text-dim:#6c6c6c;
+    --brand:#e5473c;
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: var(--font);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
+    --cyan:#5fc9df;
+    --magenta:#e06fa8;
+    --amber:#e0b24f;
+    --violet:#a988e0;
+    --lime:#8fdc8a;
+    --teal:#55d1b0;
 
-        .wrapper { max-width: 900px; width: 100%; }
+    --font-display:'VT323', monospace;
+    --font-body:'IBM Plex Mono', monospace;
+  }
 
-        nav {
-            border: 1px solid var(--dim);
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
+  *,*::before,*::after{ box-sizing:border-box; }
 
-        .nav-links button {
-            background: none;
-            border: none;
-            color: var(--text);
-            font-family: var(--font);
-            cursor: pointer;
-            margin-right: 15px;
-            font-size: 0.85rem;
-            transition: 0.2s;
-        }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:14px;
+    line-height:1.6;
+  }
 
-        .nav-links button:hover, .nav-links button.active {
-            color: var(--main);
-            text-shadow: 0 0 5px var(--main);
-        }
+  ::selection{ background:var(--brand); color:#0a0a0a; }
+  a{ color:inherit; }
+  button{ font-family:inherit; color:inherit; background:none; border:none; cursor:pointer; padding:0; }
+  :focus-visible{ outline:1px solid var(--brand); outline-offset:3px; }
 
-        .handle { color: var(--main); font-weight: bold; }
+  /* ---------- decorative vertical side text ---------- */
+  .side-text{
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    writing-mode:vertical-rl;
+    letter-spacing:.25em;
+    font-size:.62rem;
+    color:var(--brand);
+    opacity:.45;
+    white-space:nowrap;
+    pointer-events:none;
+    z-index:1;
+  }
+  .side-text--left{ left:10px; }
+  .side-text--right{ right:10px; transform:translateY(-50%) rotate(180deg); }
+  @media (max-width:1000px){ .side-text{ display:none; } }
 
-        .tab-content { display: none; min-height: 400px; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in; }
+  /* ---------- layout ---------- */
+  .layout{
+    max-width:980px;
+    margin:0 auto;
+    padding:3.5rem 1.5rem 6rem;
+    display:grid;
+    grid-template-columns:230px 1fr;
+    gap:2.2rem;
+    align-items:start;
+  }
+  @media (max-width:760px){
+    .layout{ grid-template-columns:1fr; padding:2.2rem 1.2rem 4rem; }
+  }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+  /* ---------- sidebar: avatar window ---------- */
+  .win-box{
+    border:1px solid var(--border);
+    background:var(--panel);
+  }
+  .win-titlebar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:.4rem .55rem;
+    border-bottom:1px solid var(--border);
+    background:var(--panel-2);
+    font-size:.72rem;
+    color:var(--text-dim);
+    letter-spacing:.02em;
+  }
+  .win-icon{ width:9px; height:9px; border:1px solid var(--text-dim); }
 
-        h1, h2 { color: var(--main); text-transform: uppercase; margin-top: 0; }
-        
-        .social-list { list-style: none; padding: 0; }
-        .social-list li { margin: 10px 0; border-left: 2px solid var(--dim); padding-left: 15px; }
-        .social-list a { color: var(--main); text-decoration: none; }
-        .social-list a:hover { text-decoration: underline; }
+  .photo-wrap{
+    position:relative;
+    aspect-ratio:1/1;
+    background:#080808;
+  }
+  .photo-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter:grayscale(55%) contrast(1.05) brightness(.85);
+  }
+  .photo-fallback{
+    position:absolute;
+    inset:0;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:.5rem;
+    text-align:center;
+    padding:1rem;
+    color:var(--text-dim);
+    font-size:.66rem;
+  }
+  .photo-fallback svg{ width:46px; height:46px; opacity:.4; }
+  .photo-fallback code{ color:var(--brand); }
+  .photo-wrap.no-photo img{ display:none; }
+  .photo-wrap.no-photo .photo-fallback{ display:flex; }
 
-        .htb-card { 
-            display: flex; 
-            gap: 20px; 
-            border: 1px solid #111; 
-            padding: 20px; 
-            margin-bottom: 25px;
-            background: #050505;
-        }
+  /* ---------- main: masthead ---------- */
+  .masthead{ border-bottom:1px solid var(--border); padding-bottom:1.4rem; }
+  .logo{
+    font-family:var(--font-display);
+    font-size:3.2rem;
+    line-height:1;
+    margin:0;
+    letter-spacing:.01em;
+  }
+  .logo-name{ color:#f2f2f2; }
+  .logo-tag{ color:var(--brand); }
 
-        .machine-thumb { 
-            width: 100px; height: 100px; 
-            border: 1px solid var(--dim);
-            object-fit: cover;
-        }
+  .tagline{
+    font-size:.85rem;
+    color:var(--text);
+    margin:.5rem 0 .3rem;
+  }
+  .blink{ color:var(--brand); animation:blink 1s step-end infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
 
-        .tag { font-size: 0.7rem; padding: 2px 5px; border: 1px solid; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
-        .hard { color: var(--main); border-color: var(--main); }
-        .medium { color: #ffae00; border-color: #ffae00; }
+  .bio-line{
+    font-size:.8rem;
+    color:var(--text-dim);
+    max-width:60ch;
+    margin:0 0 1rem;
+  }
 
-        .log-entry { font-size: 0.75rem; color: #555; margin-top: 10px; border-top: 1px solid #111; padding-top: 5px; }
+  .tag-row{
+    list-style:none;
+    display:flex;
+    flex-wrap:wrap;
+    gap:.4rem;
+    padding:0;
+    margin:0;
+  }
+  .tag-row li{
+    font-size:.68rem;
+    border:1px solid var(--border);
+    padding:.2rem .5rem;
+    color:var(--text-dim);
+  }
 
-        footer { margin-top: 60px; border-top: 1px solid var(--dim); padding-top: 20px; font-size: 0.7rem; color: #444; text-align: center; }
+  /* ---------- main: contents ---------- */
+  .contents{ margin-top:1.8rem; }
+  .contents-head{
+    display:flex;
+    align-items:baseline;
+    gap:.6rem;
+    margin-bottom:.9rem;
+  }
+  .contents-head h2{
+    font-family:var(--font-display);
+    font-size:1.3rem;
+    font-weight:400;
+    letter-spacing:.05em;
+    text-transform:lowercase;
+    margin:0;
+    color:#f2f2f2;
+  }
+  .count-badge{
+    font-size:.68rem;
+    color:var(--text-dim);
+    border:1px solid var(--border);
+    padding:.1rem .4rem;
+  }
 
-    </style>
+  .thread-list{ display:flex; flex-direction:column; gap:.7rem; }
+
+  .thread-card{
+    --accent:var(--cyan);
+    border:1px solid var(--border);
+    background:var(--panel);
+    padding:.9rem 1rem;
+    cursor:pointer;
+    transition:border-color .2s, background .2s;
+  }
+  .thread-card:hover, .thread-card:focus-visible{
+    border-color:var(--accent);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 70%);
+  }
+
+  .thread-top{
+    display:flex;
+    justify-content:space-between;
+    font-size:.66rem;
+    color:var(--text-dim);
+    margin-bottom:.35rem;
+  }
+  .thread-tag{ color:var(--accent); }
+
+  .thread-title{
+    font-family:var(--font-display);
+    font-size:1.35rem;
+    margin:0 0 .3rem;
+    color:var(--text);
+    transition:color .2s;
+  }
+  .thread-card:hover .thread-title, .thread-card:focus-visible .thread-title{
+    color:var(--accent);
+  }
+
+  .thread-snippet{
+    font-size:.78rem;
+    color:var(--text-dim);
+    margin:0 0 .55rem;
+    max-width:65ch;
+  }
+
+  .thread-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:.64rem;
+  }
+  .badge{
+    padding:.08rem .4rem;
+    border:1px solid currentColor;
+  }
+  .badge--new{ color:var(--lime); }
+  .badge--locked{ color:var(--brand); }
+  .badge--pinned{ color:var(--amber); }
+  .badge--none{ color:var(--text-dim); border-color:var(--border); }
+
+  .thread-expand{ color:var(--text-dim); }
+
+  .thread-detail{
+    margin-top:.7rem;
+    padding-top:.7rem;
+    border-top:1px dashed var(--border);
+    font-size:.8rem;
+    color:var(--text);
+  }
+  .thread-detail p{ margin:0; }
+  .paper-link{
+    display:inline-block;
+    margin-top:.55rem;
+    font-size:.68rem;
+    color:var(--accent);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+    transition:border-color .2s;
+  }
+  .paper-link:hover, .paper-link:focus-visible{ border-color:var(--accent); }
+
+  /* ---------- main: spotify ---------- */
+  .spotify-block{ margin-top:1.8rem; }
+  .spotify-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:.9rem;
+  }
+  .spotify-embed iframe{ display:block; width:100%; border:0; }
+  @media (max-width:640px){
+    .spotify-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- main: partners ---------- */
+  .partners-block{ margin-top:1.8rem; }
+  .partners-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:.8rem;
+  }
+  .partner-badge{
+    display:block;
+    height:31px;
+    width:auto;
+    border:1px solid var(--border);
+    filter:grayscale(20%);
+    transition:filter .2s, border-color .2s;
+  }
+  .partner-badge:hover{
+    filter:grayscale(0%);
+    border-color:var(--brand);
+  }
+
+  /* ---------- footer ---------- */
+  .site-footer{
+    margin-top:2.6rem;
+    padding-top:1.6rem;
+    border-top:1px solid var(--border);
+    text-align:center;
+  }
+  .hash-line{
+    font-size:.78rem;
+    color:var(--brand);
+    letter-spacing:.03em;
+    margin:0 0 1rem;
+  }
+  .badge-row{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:.5rem;
+    margin-bottom:1rem;
+  }
+  .retro-badge{
+    font-size:.62rem;
+    letter-spacing:.03em;
+    color:var(--text-dim);
+    border:1px solid var(--border);
+    padding:.28rem .55rem;
+  }
+  .credits{ font-size:.68rem; color:var(--text-dim); margin:0; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
 </head>
 <body>
 
-    <div class="wrapper">
-        <nav>
-            <div class="nav-links">
-                <button onclick="openTab('home')" class="active">[ 0xh0m3 ]</button>
-                <button onclick="openTab('about')">[ 0xAb0ut-Us ]</button>
-                <button onclick="openTab('contribute')">[ 0xC0ntribut3 ]</button>
-                <button onclick="openTab('papers')">[ 0xP4p3rs ]</button>
-            </div>
-            <div class="handle">pwnbuffer@nullbyte</div>
-        </nav>
+<span class="side-text side-text--left" aria-hidden="true">0x0539 • evil • Pwned!</span>
+<span class="side-text side-text--right" aria-hidden="true">Siem • angel • Defenced</span>
 
-        <!-- ABA HOME -->
-        <div id="home" class="tab-content active">
-            <h1>/SEC</h1>
-            <pre style="color:#00ffff; font-size: 0.6rem; line-height: 1.2; margin-bottom: 30px; text-shadow: 0 0 5px var(--main);">
-        |\                |\                |\                |\
-   || .---.          || .---.          || .---.          || .---.
-   ||/_____\         ||/_____\         ||/_____\         ||/_____\
-   ||( '.' )         ||( '.' )         ||( '.' )         ||( '.' )
-   || \_-_/_         || \_-_/_         || \_-_/_         || \_-_/_
-   :-"`'V'//-.       :-"`'V'//-.       :-"`'V'//-.       :-"`'V'//-.
-  / ,   |// , `\    / ,   |// , `\    / ,   |// , `\    / ,   |// , `\
- / /|Ll //Ll|| |   / /|Ll //Ll|| |   / /|Ll //Ll|| |   / /|Ll //Ll|| |
-/_/||__//   || |  /_/||__//   || |  /_/||__//   || |  /_/||__//   || |
-\ \/---|[]==|| |  \ \/---|[]==|| |  \ \/---|[]==|| |  \ \/---|[]==|| |
- \/\__/ |   \| |   \/\__/ |   \| |   \/\__/ |   \| |   \/\__/ |   \| |
- /\|_   | Ll_\ |   /|/_   | Ll_\ |   /|/_   | Ll_\ |   /|/_   | Ll_\ |
- `--|`^"""^`||_|   `--|`^"""^`||_|   `--|`^"""^`||_|   `--|`^"""^`||_|
-    |   |   ||/        |   |   ||/      |   |   ||/       |   |   ||/
-    |   |   |          |   |   |        |   |   |         |   |   |
-    |   |   |          |   |   |        |   |   |         |   |   |
-    |   |   |          |   |   |        |   |   |         |   |   |
-    L___l___J          L___l___J        L___l___J         L___l___J
-     |_ | _|            |_ | _|          |_ | _|           |_ | _|
-    (___|___)          (___|___)        (___|___)         (___|___)
-     ^^^ ^^^            ^^^ ^^^          ^^^ ^^^           ^^^ ^^^
-                Attack Advancing Effectively (AAE)
-            </pre>
-            <p>welcome to my brain, here you will explore my mind as if you were in a brain terminal, being able to gain knowledge with themes that I love, hope it helps you.</p>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="win-box">
+      <div class="win-titlebar">
+        <span>S3cr3t.jpg</span>
+        <span class="win-icon" aria-hidden="true"></span>
+      </div>
+      <!-- Troque assets/foto.jpg pela sua própria foto -->
+      <div class="photo-wrap" id="photoWrap">
+        <img id="profilePhoto" src="assets/s3cr3t.jpg" alt="Foto de perfil">
+        <div class="photo-fallback">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="12" cy="8" r="3.4"></circle>
+            <path d="M4.5 20c1.4-4 4-6 7.5-6s6.1 2 7.5 6"></path>
+          </svg>
         </div>
+      </div>
+    </div>
+  </aside>
 
-        <!-- ABA ABOUT -->
-        <div id="about" class="tab-content">
-            <h2>[ 0xAb0ut-Us ]</h2>
-            <p>Nullbyte, cyber security student, just a guy who wants to be the best at what makes him want to be better than myself every day that passes makes me a persistent person.</p>
-            <ul class="social-list">
-                <li>LinkedIn: <a href="https://www.linkedin.com/in/lucas-wallace-908662375/" target="_blank">/sec/nullbyte-pwn</a></li>
-                <li>GitHub: <a href="https://github.com/NullByte-7w7" target="_blank">/nullbyte-l33t</a></li>
-                <li>Discord: <span style="color: var(--main);">darksec_</span></li>
-            </ul>
+  <main class="content">
+    <header class="masthead">
+      <h1 class="logo"><span class="logo-name">NullByte</span><span class="logo-tag">_Pwned!</span></h1>
+      <!-- EDITE AQUI: nome, cargo, bio e skills -->
+      <p class="tagline">Skills &amp; Hacking <span class="blink">_</span></p>
+      <p class="bio-line">Fazendo o que dizem ser impossivel, procurando por um objetivo inserto sobre meus planos, aprendendo no caminho e se divertindo no processo! Apenas um estudante de |Cyber Security|</p>
+      <ul class="tag-row">
+        <li>[Pwned!]</li>
+        <li>[Evasion]</li>
+        <li>[Evil-Winrm]</li>
+        <li>[Nxc]</li>
+        <li>[active directory]</li>
+        <li>[Impacket]</li>
+        <li>[shigata-ganai]</li>
+      </ul>
+    </header>
+
+    <section class="contents">
+      <div class="contents-head">
+        <h2>conteúdo</h2>
+        <span class="count-badge" id="countBadge">00</span>
+      </div>
+
+      <div class="thread-list" id="threadList">
+        <article class="thread-card" style="--accent:var(--cyan)" tabindex="0"
+          data-desc="Write-ups de máquinas e desafios do Hack The Box, do reconhecimento inicial até a escalada de privilégios.">
+          <div class="thread-top"><span class="thread-tag">[htb]</span><span>1 posts</span></div>
+          <h3 class="thread-title" data-text="ctf-htb">ctf-htb</h3>
+          <p class="thread-snippet">Write-ups de máquinas Active Directory HTB</p>
+          <div class="thread-bottom"><span class="badge badge--new">[NEW]</span><span class="thread-expand">clique para expandir ▾</span></div>
+          <div class="thread-detail" hidden><p>Entendo o processo de comprometer maquinas no Active Directory!</p><a class="paper-link" href="papers/ctf-htb.html">abrir paper completo »</a></div>
+        </article>
+
+	<article class="thread-card" style="--accent:var(--magenta)" tabindex="0">
+		<div class="thread-top"><span class="thread-tag">[tricks]</span><span>12 posts</span></div>
+          <h3 class="thread-title" data-text="real-tricks-world">real-tricks-world</h3>
+	  <p class="thread-snippet">Como funciona os Processos de Evasion e operações relacionadas ao mundo real e como conseguir seu primeiro acesso a redes corporativas (Não me responsabilizo por nada!)</p>
+          <div class="thread-bottom"><span class="badge badge--pinned">[PINNED]</span><span class="thread-expand">clique para expandir ▾</span></div>
+          <div class="thread-detail" hidden><p>Mundo corporativo?! Sim esse mundo é vasto de tricks, aqui não é um CTF!</p><a class="paper-link" href="papers/real-tricks-world.html">abrir paper completo »</a></div>
+        </article>
+
+        <article class="thread-card" style="--accent:var(--amber)" tabindex="0"
+          data-desc="Pesquisa de vulnerabilidades inéditas, provas de conceito e responsible disclosure.">
+          <div class="thread-top"><span class="thread-tag">[0day]</span><span>3 posts</span></div>
+          <h3 class="thread-title" data-text="0day">0day</h3>
+          <p class="thread-snippet">Pesquisa de vulnerabilidades inéditas, provas de conceito e disclosure.</p>
+          <div class="thread-bottom"><span class="badge badge--locked">[LOCKED]</span><span class="thread-expand">clique para expandir ▾</span></div>
+          <div class="thread-detail" hidden><p>Pesquisa de vulnerabilidades inéditas, provas de conceito e responsible disclosure.</p><a class="paper-link" href="papers/0day.html">abrir paper completo »</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="spotify-block">
+      <div class="contents-head">
+        <h2>L33t songs</h2>
+        <span class="count-badge">02</span>
+      </div>
+      <div class="spotify-grid">
+        <div class="spotify-embed">
+          <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4yMMsS5QaEcsHZkKwdEyLv?utm_source=generator&si=3fb09190112f4e9c" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
-
-        <!-- ABA CONTRIBUTE -->
-        <div id="contribute" class="tab-content">
-            <h2>[ 0xC0ntribut3 ]</h2>
-            <p>If you want to contribute any ideas about the posts or financially here is my address ETH<pre style="color:green">0x9B232F0A041b075F50B2072908fa8A8b3b139633</pre></p>
+        <div class="spotify-embed">
+          <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/5SpnDpnDVzdSq5fkcMKz6I?utm_source=generator&si=aa545ea7cd9b486c" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
+      </div>
+    </section>
 
-<!-- ABA PAPERS -->
-        <div id="papers" class="tab-content">
-            <h2>[ 0xP4p3rs ]</h2>
-            
-            <!-- Paper 1: C2 Infrastructure -->
-            <div class="htb-card">
-                <div>
-                    <span class="tag hard">Advanced</span>
-                    <h3 style="margin: 0; color: var(--main);">Building a Resilient C2 Infrastructure & OPSEC (development not completed)</h3>
-                    <p style="font-size: 0.9rem; margin: 10px 0;">
-                        A comprehensive guide on deploying redirectors using AWS CloudFront and Elastic Load Balancers to hide backend Command and Control servers, focusing on operational security and traffic obfuscation.
-                    </p>
-                    <div class="log-entry">
-                        <a href="papers/redteam/c2-infrastructure-opsec.html" style="color: var(--main); text-decoration: none;">[READ_PAPER]</a>
-                    </div>
-                </div>
-            </div>
+    <section class="partners-block">
+      <div class="contents-head">
+        <h2>hacking partners</h2>
+        <span class="count-badge">02</span>
+      </div>
+      <!-- EDITE AQUI: troque/adicione banners de parceiros. Coloque o link real no href do segundo banner. -->
+      <div class="partners-row">
+        <a href="https://bezu.dev/" target="_blank" rel="noopener">
+          <img class="partner-badge" src="https://bezu.dev/assets/images/buttons/button-v2.png" alt="bezu.dev">
+        </a>
+        <a href="https://thebixowithsevenheads.wtf" target="_blank" rel="noopener">
+          <img class="partner-badge" src="assets/partner-7heads.png" alt="7 Heads">
+        </a>
+      </div>
+    </section>
 
-            <!-- Paper 2: Phishing Infrastructure -->
-            <div class="htb-card">
-                <div>
-                    <span class="tag medium">Intermediate</span>
-                    <h3 style="margin: 0; color: var(--main);">Constructing a Phishing Infrastructure for Red Team Operations (development not completed)</h3>
-                    <p style="font-size: 0.9rem; margin: 10px 0;">
-                        Implementation of automated phishing frameworks, SMTP relay hardening, and domain categorization bypass techniques to ensure high delivery rates during initial access simulations.
-                    </p>
-                    <div class="log-entry">
-                        <a href="papers/redteam/phishing-infrastructure.html" style="color: var(--main); text-decoration: none;">[READ_PAPER]</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <script>
-        function openTab(tabName) {
-            // Esconde todos os conteúdos
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-                tabcontent[i].classList.remove("active");
-            }
+    <footer class="site-footer">
+      <p class="hash-line">[ <span id="hashId">0x000000000000</span> ]</p>
+      <!-- EDITE AQUI: troque por qualquer texto/emblema que queira -->
+      <div class="badge-row">
+        <span class="retro-badge">0x0539</span>
+      </div>
+      <p class="credits">NullByte · <span id="year"></span></p>
+    </footer>
+  </main>
 
-            // Remove a classe 'active' de todos os botões
-            tablinks = document.querySelectorAll(".nav-links button");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].classList.remove("active");
-            }
+</div>
 
-            // Mostra a aba atual e marca o botão como ativo
-            document.getElementById(tabName).style.display = "block";
-            document.getElementById(tabName).classList.add("active");
-            event.currentTarget.classList.add("active");
-        }
-    </script>
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- photo fallback ---------- */
+  var photoWrap = document.getElementById('photoWrap');
+  document.getElementById('profilePhoto').addEventListener('error', function(){
+    photoWrap.classList.add('no-photo');
+  });
+
+  /* ---------- glitch scramble on thread titles ---------- */
+  var glitchChars = '!<>-_\\/[]{}—=+*^?#01';
+  function scramble(el){
+    if(reduceMotion) return;
+    var final = el.getAttribute('data-text');
+    var frame = 0, totalFrames = 9;
+    clearInterval(el._glitchInterval);
+    el._glitchInterval = setInterval(function(){
+      var revealCount = Math.floor((frame / totalFrames) * final.length);
+      var out = '';
+      for(var c = 0; c < final.length; c++){
+        out += (c < revealCount || final[c] === '-') ? final[c] : glitchChars[Math.floor(Math.random() * glitchChars.length)];
+      }
+      el.textContent = out;
+      frame++;
+      if(frame > totalFrames){ el.textContent = final; clearInterval(el._glitchInterval); }
+    }, 26);
+  }
+
+  /* ---------- thread cards: hover glitch + click to expand ---------- */
+  var threads = document.querySelectorAll('.thread-card');
+  document.getElementById('countBadge').textContent = String(threads.length).padStart(2, '0');
+
+  threads.forEach(function(card){
+    var title = card.querySelector('.thread-title');
+    var detail = card.querySelector('.thread-detail');
+    var expandLabel = card.querySelector('.thread-expand');
+
+    card.addEventListener('mouseenter', function(){ scramble(title); });
+    card.addEventListener('focus', function(){ scramble(title); });
+
+    card.addEventListener('click', function(){
+      var isHidden = detail.hidden;
+      detail.hidden = !isHidden;
+      expandLabel.textContent = isHidden ? 'clique para recolher ▴' : 'clique para expandir ▾';
+    });
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); card.click(); }
+    });
+  });
+
+  /* ---------- footer flourishes ---------- */
+  document.getElementById('hashId').textContent = '0x' + Array.from({length:12}, function(){
+    return Math.floor(Math.random() * 16).toString(16);
+  }).join('');
+  document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
 
 </body>
-</html>
+</html/Root>
