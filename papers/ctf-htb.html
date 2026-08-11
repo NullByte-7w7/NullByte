@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ctf-htb :: root</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<span class="side-text side-text--left" aria-hidden="true">ACESSO_MONITORADO • ACESSO_MONITORADO • ACESSO_MONITORADO</span>
+<span class="side-text side-text--right" aria-hidden="true">ACESSO_MONITORADO • ACESSO_MONITORADO • ACESSO_MONITORADO</span>
+
+<div class="paper-layout">
+
+  <a class="back-link" href="../index.html">‹ cd .. // voltar</a>
+
+  <div class="win-box paper-winbox" style="--accent:var(--cyan)">
+    <div class="win-titlebar">
+      <span>~/writeups/ctf-htb/index.md</span>
+      <span class="win-icon" aria-hidden="true"></span>
+    </div>
+    <div class="paper-header">
+      <div class="thread-top"><span class="thread-tag">[htb]</span><span>18 posts · atualizado em --/--/----</span></div>
+      <!-- EDITE AQUI: título e descrição do tema -->
+      <h1 class="paper-title" data-text="ctf-htb">ctf-htb</h1>
+      <p class="paper-desc">Write-ups de máquinas e desafios do Hack The Box. Aqui entra o tema que será abordado nesse diretório: reconhecimento, exploração e escalada de privilégios em ambientes controlados, sempre documentando o caminho do jeito que ele realmente aconteceu — inclusive os becos sem saída.</p>
+      <ul class="tag-row">
+        <li>[nmap]</li>
+        <li>[gobuster]</li>
+        <li>[privesc]</li>
+        <li>[linux]</li>
+        <li>[windows]</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EDITE AQUI: esboço do paper — troque os textos de exemplo pelo write-up de verdade -->
+  <article class="paper-body">
+    <section class="paper-section">
+      <h2>introdução</h2>
+      <p>Contexto da máquina/desafio: dificuldade, sistema operacional e o que motivou escolher esse alvo. Um parágrafo curto já resolve — o objetivo aqui é situar quem está lendo antes de entrar no passo a passo.</p>
+    </section>
+
+    <section class="paper-section">
+      <h2>reconhecimento</h2>
+      <p>Varredura de portas, serviços expostos e primeiras hipóteses. Mostre os comandos exatamente como foram rodados.</p>
+      <pre class="code-block"><code>$ nmap -sC -sV -p- 10.10.10.10</code></pre>
+    </section>
+
+    <section class="paper-section">
+      <h2>exploração</h2>
+      <p>A vulnerabilidade encontrada, por que ela existe e como foi explorada até conseguir o primeiro acesso (foothold).</p>
+    </section>
+
+    <section class="paper-section">
+      <h2>escalada de privilégios</h2>
+      <p>O caminho de usuário comum até root/administrator: binário mal configurado, credencial reaproveitada, kernel exploit — o que for o caso.</p>
+    </section>
+
+    <section class="paper-section">
+      <h2>conclusão</h2>
+      <p>O que essa máquina ensinou, o que você faria diferente numa próxima vez e links para ferramentas ou referências usadas.</p>
+    </section>
+  </article>
+
+  <footer class="site-footer">
+    <p class="hash-line">[ <span id="hashId">0x000000000000</span> ]</p>
+    <div class="badge-row">
+      <span class="retro-badge">100% ARTESANAL</span>
+      <span class="retro-badge">SEM TRACKERS</span>
+      <span class="retro-badge">VIM &gt; EMACS</span>
+      <span class="retro-badge">TOR OK</span>
+      <span class="retro-badge">HTML PURO</span>
+    </div>
+    <p class="credits">feito à mão · sem frameworks · <span id="year"></span></p>
+  </footer>
+
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

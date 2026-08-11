@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0day :: root</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<span class="side-text side-text--left" aria-hidden="true">ACESSO_MONITORADO • ACESSO_MONITORADO • ACESSO_MONITORADO</span>
+<span class="side-text side-text--right" aria-hidden="true">ACESSO_MONITORADO • ACESSO_MONITORADO • ACESSO_MONITORADO</span>
+
+<div class="paper-layout">
+
+  <a class="back-link" href="../index.html">‹ cd .. // voltar</a>
+
+  <div class="win-box paper-winbox" style="--accent:var(--amber)">
+    <div class="win-titlebar">
+      <span>~/writeups/0day/index.md</span>
+      <span class="win-icon" aria-hidden="true"></span>
+    </div>
+    <div class="paper-header">
+      <div class="thread-top"><span class="thread-tag">[0day]</span><span>3 posts · atualizado em --/--/----</span></div>
+      <!-- EDITE AQUI: título e descrição do tema -->
+      <h1 class="paper-title" data-text="0day">0day</h1>
+      <p class="paper-desc">Descrição do tema que será abordado: pesquisa de vulnerabilidades inéditas, construção de provas de conceito e o processo de divulgação responsável até a correção ser publicada.</p>
+      <ul class="tag-row">
+        <li>[fuzzing]</li>
+        <li>[reverse engineering]</li>
+        <li>[poc]</li>
+        <li>[responsible disclosure]</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EDITE AQUI: esboço do paper — troque os textos de exemplo pelo write-up de verdade -->
+  <article class="paper-body">
+    <section class="paper-section">
+      <h2>visão geral</h2>
+      <p>O software/serviço analisado, a versão testada e o motivo de ter virado alvo da pesquisa.</p>
+    </section>
+
+    <section class="paper-section">
+      <h2>descoberta</h2>
+      <p>Como a falha foi encontrada — fuzzing, revisão de código, engenharia reversa — e o comportamento anômalo observado.</p>
+      <pre class="code-block"><code>$ ./fuzzer --target alvo.bin --timeout 60</code></pre>
+    </section>
+
+    <section class="paper-section">
+      <h2>prova de conceito</h2>
+      <p>O PoC mínimo que demonstra o problema, sem detalhar passos que facilitem exploração maliciosa em produção.</p>
+    </section>
+
+    <section class="paper-section">
+      <h2>impacto</h2>
+      <p>O que um atacante conseguiria fazer explorando essa falha e em que cenários ela é mais crítica.</p>
+    </section>
+
+    <section class="paper-section">
+      <h2>divulgação responsável</h2>
+      <p>Linha do tempo do contato com o fornecedor, prazo dado para correção e status atual (corrigido, aguardando patch, CVE atribuído etc).</p>
+    </section>
+  </article>
+
+  <footer class="site-footer">
+    <p class="hash-line">[ <span id="hashId">0x000000000000</span> ]</p>
+    <div class="badge-row">
+      <span class="retro-badge">100% ARTESANAL</span>
+      <span class="retro-badge">SEM TRACKERS</span>
+      <span class="retro-badge">VIM &gt; EMACS</span>
+      <span class="retro-badge">TOR OK</span>
+      <span class="retro-badge">HTML PURO</span>
+    </div>
+    <p class="credits">feito à mão · sem frameworks · <span id="year"></span></p>
+  </footer>
+
+</div>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>
